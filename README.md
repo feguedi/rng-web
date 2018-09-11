@@ -2,7 +2,9 @@
 
 ## Descripción
 
-Generador de números pseudo-aleatorios donde el usuario pueda elegir 
+Generador de números pseudo-aleatorios donde el usuario pueda elegir el tipo de método para generar.
+
+Parte del proyecto es utilizar una API para que pueda generarse un archivo, ya sea JSON o CSV, mediante una solicitud. En cambio, si se quiere obtener un archivo de Excel con los números, se debe ingresar directamente a la versión web.
 
 ## Pendientes
 
