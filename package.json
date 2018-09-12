@@ -9,14 +9,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/feguedi/generador.git"
+        "url": "git+https://github.com/feguedi/rng-web.git"
     },
     "author": "Ixe Fernández",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/feguedi/generador/issues"
+        "url": "https://github.com/feguedi/rng-web/issues"
     },
-    "homepage": "https://github.com/feguedi/generador#readme",
+    "homepage": "https://github.com/feguedi/rng-web#readme",
     "dependencies": {
         "body-parser": "^1.18.3",
         "d3": "~4.13.0",
