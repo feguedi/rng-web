@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="assets/css/bootstrap4-pleasant.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu" rel="stylesheet">
     {{#if d3}}
-        <script src="https://d3js.org/d3.v4.min.js"></script>
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu" rel="stylesheet">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     {{/if}}
     {{#if chartjs}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
     {{/if}}
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <title>{{ title }}</title>
 </head>
+
 <body>
+    <header class="ht-header">
+        <div class="ht-navbar-wrapper ht-navbar-wrapper-sticky bg-primary">
+            <div class="container ht-navbar ht-navbar-dark">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link active" id="title">RNG</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>

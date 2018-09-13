@@ -1,72 +1,76 @@
 {{> head }}
-    <header class="ht-header">
-        <div class="ht-navbar-wrapper ht-navbar-wrapper-sticky bg-primary">
-            <div class="container ht-navbar ht-navbar-dark">
-                <ul class="nav nav-pills">
-                    <li class="nav-item">
-                        <!-- tooltip quitado -->
-                        <a href="#!" class="nav-link mixto active" id="cong-mixto">Congruencial Mixto</a><span class="question tooltip">?<span class="tooltiptext">Cuenta como tooltip</span></span>
-                    </li>
-                    <li class="nav-item">
-                        <!-- tooltip quitado -->
-                        <a href="#!" class="nav-link multiplicativo" id="cong-multiplicativo">Congruencial Multiplicativo</a><span class="question tooltip">?<span class="tooltiptext">Cuenta como tooltip</span></span>
-                    </li>
-                </ul>
+<div class="jumbotron bg-light mb-0 radius-0">
+    <div class="container">
+        <div class="row h1-title">
+            <div class="col-xl-8">
+                <h1 class="display-2 display-fix">Random Number Generator</h1>
             </div>
         </div>
-    </header>
-    <div class="jumbotron bg-light mb-0 radius-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-8">
-                    <h1 class="display-2 display-fix">Gráfico</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-8">
-                    <form action="/d3" method="post">
+        <div class="row">
+            <div class="col-xl-9">
+                <form action="/d3" method="post">
+                    <div class="col-lg-2">
                         <label for="inlineFormInputGroup" class="sr-only semilla">Semilla</label>
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0 semilla">
-                            <input type="number" maxlength="20" class="form-control form-control-lg semilla" id="inlineSemilla" placeholder="Semilla">
+                            <input type="number" maxlength="20" class="form-control form-control-lg semilla" id="inlineSemilla"
+                                placeholder="Semilla">
                         </div>
+                    </div> 
+                    <div class="col-lg-2">
                         <label for="inlineFormInputGroup" class="multiplicador sr-only">Multiplicador</label>
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0 multiplicador">
-                            <input type="number" maxlength="20" class="form-control form-control-lg multiplicador" id="inlineMultiplicador" placeholder="Multiplicador">
+                            <input type="number" maxlength="20" class="form-control form-control-lg multiplicador" id="inlineMultiplicador"
+                                placeholder="Multiplicador">
                         </div>
+                    </div>
+                    <div class="col-lg-2">
                         <label for="inlineFormInputGroup" class="sr-only caditiva">Constante Aditiva</label>
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0 caditiva">
-                            <input type="number" maxlength="20" class="form-control form-control-lg caditiva" id="inlineCAditiva" placeholder="Constante Aditiva">
+                            <input type="number" maxlength="20" class="form-control form-control-lg caditiva" id="inlineCAditiva"
+                                placeholder="Constante Aditiva">
                         </div>
+                    </div>
+                    <div class="col-lg-2">
                         <label for="inlineFormInputGroup" class="sr-only modulo">Módulo</label>
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0 modulo">
-                            <input type="number" maxlength="20" class="form-control form-control-lg modulo" id="inlineModulo" placeholder="Módulo">
+                            <input type="number" maxlength="20" class="form-control form-control-lg modulo" id="inlineModulo"
+                                placeholder="Módulo">
                         </div>
-                        
+                    </div>
+                    <span style="text-align:center;">
                         <button type="submit" class="btn btn-primary btn-lg" id="btn-generar">Generar</button>
-                    </form>
-                </div>
+                    </span>
+                </form>
             </div>
         </div>
     </div>
-    <canvas id="myChart" width="400" height="400"></canvas>
-    <!-- Modal -->
-    <div id="myModal" class="modal">
-        <span class="close">&times;</span>
+</div>
+<footer class="creditos">
+    <a href="https://github.com/feguedi/rng-web" class="btn btn-outline-primary">
+        <span class="fa fa-github-alt mr-2"></span>
+        Repositorio en Github
+    </a>
+</footer>
 
-        <!-- Tarjeta de descripción -->
-        <div class="card">
-            <div class="card-header">
-                {{ metodo }}
-            </div>
-            <div class="card-body">
-                <blockquote class="card-blockquote">
-                    <p>{{ descripcion-metodo }}</p>
-                    <footer>
-                        <cite title="Author">Raúl Coss Bú</cite>
-                    </footer>
-                </blockquote>
-            </div>
+<canvas id="myChart" width="400" height="400"></canvas>
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+
+    <!-- Tarjeta de descripción -->
+    <div class="card">
+        <div class="card-header">
+            {{ metodo }}
         </div>
-        <div id="caption"></div>
+        <div class="card-body">
+            <blockquote class="card-blockquote">
+                <p>{{ descripcion-metodo }}</p>
+                <footer>
+                    <cite title="Author">Raúl Coss Bú</cite>
+                </footer>
+            </blockquote>
+        </div>
     </div>
+    <div id="caption"></div>
+</div>
 {{> footer }}

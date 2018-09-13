@@ -3,7 +3,6 @@ require('./config')
 const express = require('express')
 const hbs = require('hbs')
 const bodyParser = require('body-parser')
-const d3 = require('d3')
 const app = express()
 let generator = require('./generator').generator()
 
@@ -14,7 +13,7 @@ app.use(express.static(__dirname + '/public'))
 hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs')
 
-app.use(express.static(__dirname + '/public'))
+// app.use(express.static(__dirname + '/public'))
 
 app.use((err, req, res, next) => {
     switch (res.status()) {
@@ -59,7 +58,7 @@ app.use((err, req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-    res.render('layouts/layout', { title: 'Cuenta como index, ¿no?' })
+    res.render('layouts/index', { title: 'Random Number Generator' })
 })
 
 app.get('/chart-js', (req, res) => {

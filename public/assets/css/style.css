@@ -136,3 +136,41 @@
         opacity: 1
     }
 }
+
+.img-platform {
+    padding: 24px;
+    padding-top: 12%;
+    height: 40%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    overflow: auto;
+    /* max-width: 100%; */
+}
+
+.card {
+    /*    margin-right: 4rem;
+        margin-left: 4rem; */
+    max-width: 455px;
+    height: 500px;
+    border-width: 0px;
+}
+
+.creditos {
+    padding-top: 80px;
+    padding-bottom: 0%;
+    text-align: center;
+    font-size: 8pt;
+}
+
+.h1-title {
+    padding-bottom: 15%;
+    /* margin-left: 4rem; */
+}
+
+.col-lg-6 {
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    position: relative;
+}
