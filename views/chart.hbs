@@ -1,9 +1,9 @@
 {{> head }}
 <canvas id="myChart" width="400" height="400"></canvas>
 <script>
-    var data = $.getJSON('http://gudin.io:8080/data', d => {
+    {{!-- var data = $.getJSON('http://gudin.io:8080/data', d => {
         alert(d);
-    });
+    }); --}}
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',

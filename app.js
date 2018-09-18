@@ -57,44 +57,54 @@ app.use((err, req, res, next) => {
     }
 })
 
+app.get('/50x', (req, res) => {
+    res.render('error', {
+        message: `Error del servidor\n${ res.status() }`,
+        title: `${ res.status() }`
+    })
+})
+
 app.get('/', (req, res) => {
     res.render('layouts/index', { title: 'Random Number Generator' })
 })
 
 app.get('/chart-js', (req, res) => {
     res.render('chart', {
-        title: 'Gráfica con Chart.js',
+        title: 'RNG - Chart.js',
         chartjs: true
     })
 })
 
 app.get('/d3', (req, res) => {
     res.render('index', {
-        title: 'Gráfica con D3',
+        title: 'RNG - D3',
         d3: true
     })
 })
 
-app.post('/d3', (req, res) => {
-    let body = req.body
-    let metodo = body.metodo
+app.post('/data', async(req, res) => {
+    let body
 
     try {
-        switch (metodo) {
-            case 'mixto':
-                res.json({ array: generator.mixto(body.x, body.a, body.c, body.m) })
-                break;
-            case 'multiplicativo':
-                res.json({ array: generator.multiplicativo(body.x, body.a, body.m) })
-                break;
-            default:
-                break;
-        }
+        body = await req.body
     } catch (error) {
         res.status(400).render('error', {
             title: 'Error',
             message: 'Método no encontrado\n¿Seguro que es un método congruencial?'
         })
+    }
+
+    let metodo = body.metodo
+
+    switch (metodo) {
+        case 'mixto':
+            res.json({ array: generator.mixto(body.x, body.a, body.c, body.m) })
+            break;
+        case 'multiplicativo':
+            res.json({ array: generator.multiplicativo(body.x, body.a, body.m) })
+            break;
+        default:
+            break;
     }
 })
 

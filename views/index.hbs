@@ -1,50 +1,66 @@
 {{> head }}
-<div class="jumbotron bg-light mb-0 radius-0">
-    <div class="container">
-        <div class="row h1-title">
-            <div class="col-xl-8">
-                <h1 class="display-2 display-fix">Random Number Generator</h1>
+
+{{> jthead }}
+
+<div class="row" id="variables">
+    <div class="col-xl-12">
+        <form action="/data" method="post" id="form-variables">
+            <div class="row d-flex justify-content-around" data-toggle="buttons">
+                <div class="col-xl-2 btn-group btn-group-toggle">
+                    <label class="btn btn-outline-primary cong active">
+                        <input type="radio" id="cong-mixto" name="options" autocomplete="off" checked="">Congruencial
+                        Mixto
+                    </label>
+                </div>
+                <div class="col-xl-2 btn-group btn-group-toggle">
+                    <label class="btn btn-outline-primary cong">
+                        <input type="radio" id="cong-multiplicativo" name="options" autocomplete="off">Congruencial
+                        Multiplicativo
+                    </label>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-9">
-                <form action="/d3" method="post">
-                    <div class="col-lg-2">
-                        <label for="inlineFormInputGroup" class="sr-only semilla">Semilla</label>
-                        <div class="input-group mb-2 mr-sm-2 mb-sm-0 semilla">
-                            <input type="number" maxlength="20" class="form-control form-control-lg semilla" id="inlineSemilla"
-                                placeholder="Semilla">
-                        </div>
-                    </div> 
-                    <div class="col-lg-2">
-                        <label for="inlineFormInputGroup" class="multiplicador sr-only">Multiplicador</label>
-                        <div class="input-group mb-2 mr-sm-2 mb-sm-0 multiplicador">
-                            <input type="number" maxlength="20" class="form-control form-control-lg multiplicador" id="inlineMultiplicador"
-                                placeholder="Multiplicador">
-                        </div>
+            <div class="row d-flex justify-content-around">
+                <div class="col-lg-3 semilla">
+                    <label for="inlineFormInputGroup" class="sr-only semilla">Semilla</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0 semilla">
+                        <input type="number" maxlength="10" class="form-control form-control-lg semilla" id="inlineSemilla"
+                            placeholder="Semilla" />
                     </div>
-                    <div class="col-lg-2">
-                        <label for="inlineFormInputGroup" class="sr-only caditiva">Constante Aditiva</label>
-                        <div class="input-group mb-2 mr-sm-2 mb-sm-0 caditiva">
-                            <input type="number" maxlength="20" class="form-control form-control-lg caditiva" id="inlineCAditiva"
-                                placeholder="Constante Aditiva">
-                        </div>
+                </div>
+                <div class="col-lg-3 multiplicador">
+                    <label for="inlineFormInputGroup" class="multiplicador sr-only">Multiplicador</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0 multiplicador">
+                        <input type="number" maxlength="10" class="form-control form-control-lg multiplicador" id="inlineMultiplicador"
+                            placeholder="Multiplicador" />
                     </div>
-                    <div class="col-lg-2">
-                        <label for="inlineFormInputGroup" class="sr-only modulo">Módulo</label>
-                        <div class="input-group mb-2 mr-sm-2 mb-sm-0 modulo">
-                            <input type="number" maxlength="20" class="form-control form-control-lg modulo" id="inlineModulo"
-                                placeholder="Módulo">
-                        </div>
+                </div>
+                <div class="col-lg-3 caditiva">
+                    <label for="inlineFormInputGroup" class="sr-only caditiva">Constante Aditiva</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0 caditiva">
+                        <input type="number" maxlength="10" class="form-control form-control-lg caditiva" id="inlineCAditiva"
+                            placeholder="Constante Aditiva" />
                     </div>
-                    <span style="text-align:center;">
-                        <button type="submit" class="btn btn-primary btn-lg" id="btn-generar">Generar</button>
-                    </span>
-                </form>
+                </div>
+                <div class="col-lg-3 modulo">
+                    <label for="inlineFormInputGroup" class="sr-only modulo">Módulo</label>
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0 modulo">
+                        <input type="number" maxlength="10" class="form-control form-control-lg modulo" id="inlineModulo"
+                            placeholder="Módulo" />
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="row d-flex justify-content-around">
+                <span style="padding-top: 3%;">
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalChart"
+                        id="btn-generar">Generar</button>
+                </span>
+            </div>
+        </form>
     </div>
 </div>
+
+{{> jtfooter }}
+
 <footer class="creditos">
     <a href="https://github.com/feguedi/rng-web" class="btn btn-outline-primary">
         <span class="fa fa-github-alt mr-2"></span>
@@ -52,8 +68,29 @@
     </a>
 </footer>
 
-<canvas id="myChart" width="400" height="400"></canvas>
-<!-- Modal -->
+<div id="modalChart" class="modal-dialog modal-lg modal">
+    <div class="modal-content">
+        <canvas id="myChart" width="400" height="0"></canvas>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-xl-3">
+                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="JavaScript Object Notation: formato de texto ligero para el intercambio de datos"
+                    aria-describedby="tooltip718878">JSON</button>
+            </div>
+            <div class="col-xl-3">
+                <button class="btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Comma-Separated Values: documento donde los datos son representados en forma de tabla, en las que las columnas se separan por comas y las filas por saltos de líneas"
+                    aria-describedby="tooltip718878">CSV</button>
+            </div>
+            <div class="col-xl-3">
+                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Formato de archivo que admite Microsoft Excel"
+                    aria-describedby="tooltip718878">XLSX</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Descripcion -->
 <div id="myModal" class="modal">
     <span class="close">&times;</span>
 
@@ -73,4 +110,5 @@
     </div>
     <div id="caption"></div>
 </div>
+
 {{> footer }}

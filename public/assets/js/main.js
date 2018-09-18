@@ -1,8 +1,10 @@
 'use strict'
-let modal = document.getElementById('modal')
-let btn = document.getElementById('question')
+let modal = document.getElementById('myModal')
+let btn = document.getElementById('btn-generar')
 let span = document.getElementsByClassName('close')[0]
 
+let form = document.getElementById('form-variables')
+let options = form.elements.options
 let cMixto = document.getElementById('cong-mixto')
 let cMultiplicativo = document.getElementById('cong-multiplicativo')
 
@@ -13,16 +15,22 @@ let multiplicador = document.getElementById('inlineMultiplicador')
 let semilla = document.getElementById('inlineSemilla')
 let modulo = document.getElementById('inlineModulo')
 
-cMixto.on('click', () => { // Cuando se presiona el tipo Congruencial Mixto
-    
-})
 
-cMultiplicativo.on('click', ()=> { // Cuando se presiona el tpo Congruencial Multiplicativo
-    
-})
+
+cMixto.onclick = () => { // Cuando se presiona el tipo Congruencial Mixto
+    console.log("Se presionó congruencial mixto")
+}
+
+cMultiplicativo.onclick = () => { // Cuando se presiona el tipo Congruencial Multiplicativo
+    console.log("Se presionó congruencial multiplicativo")
+}
 
 btn.onclick = () => {
-    modal.style.display = 'block'
+    // $('#myChart').css({
+    //     'height': 400,
+    //     'visibility': 'visible'
+    // })
+    console.log("Se disparó el botón para generar la gráfica")
 }
 
 span.onclick = () => {
