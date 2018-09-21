@@ -18,10 +18,13 @@
     },
     "homepage": "https://github.com/feguedi/rng-web#readme",
     "dependencies": {
+        "async": "^2.6.1",
         "body-parser": "^1.18.3",
         "d3": "~4.13.0",
         "express": "~4.13.1",
         "hbs": "^4.0.1",
+        "request": "^2.88.0",
+        "serve-favicon": "^2.5.0",
         "xlsx": "^0.14.0"
     },
     "devDependencies": {

@@ -1,6 +1,10 @@
 'use strict'
 let mixto = require('./mixto').value
 let multiplicativo = require('./multiplicativo').value
+const express = require('express')
+const app = express()
+const request = require('request')
+const async = require('async')
     // TODO: arreglar esta clase y convertirla en una función global
     // class Generator {
     //     constructor() {
@@ -92,4 +96,4 @@ let generator = () => {
     }
 }
 
-module.exports = { generator }
+module.exports = generator
