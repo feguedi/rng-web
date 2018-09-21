@@ -3,9 +3,10 @@ require('./config')
 const express = require('express')
 const hbs = require('hbs')
 const bodyParser = require('body-parser')
+const path = require('path')
 const app = express()
 const favicon = require('serve-favicon')
-const routes = rquire('./routes').routes
+const routes = require('./routes').routes
 const router = require('./routes').router
     // const port = require('./config')
 

@@ -16,7 +16,7 @@ let home = (req, res) => {
 
 let form_d3 = (req, res) => {
     res.render('index', {
-        title: 'RNG - D3',
+        title: 'Random Number Generator - D3',
         d3: true
     })
 }
@@ -30,16 +30,16 @@ let error_50x = (req, res) => {
 
 let form_chartjs = (req, res) => {
     res.render('chart', {
-        title: 'RNG - Chart.js',
+        title: 'Random Number Generator - Chart.js',
         chartjs: true
     })
 }
 
-let post_data = async(req, res) => {
+let post_data = (req, res) => {
     let body
 
     try {
-        body = await req.body
+        body = req.body
     } catch (error) {
         res.status(400).render('error', {
             title: 'Error',
