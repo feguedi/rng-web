@@ -37,7 +37,6 @@ let form_chartjs = (req, res) => {
 }
 
 let post_data = (req, res) => {
-    // res.json(req.body)
     let body
 
     try {
