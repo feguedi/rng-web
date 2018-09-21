@@ -2,4 +2,4 @@
 
 let value = (x, a, m) => (a * x) % m
 
-module.exports = { value }
+module.exports = value

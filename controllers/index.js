@@ -1,10 +1,11 @@
 'use strict'
 const fs = require('fs')
+const generator = require('../generator')
 
-let generadorD3 = (req, res) => {
-    let generator = require('../generator')
+// let generadorD3 = (req, res) => {
+//     let generator = require('../generator')
 
-}
+// }
 
 let createTempFile = () => {
 
@@ -36,6 +37,7 @@ let form_chartjs = (req, res) => {
 }
 
 let post_data = (req, res) => {
+    // res.json(req.body)
     let body
 
     try {
@@ -47,14 +49,14 @@ let post_data = (req, res) => {
         })
     }
 
-    let metodo = body.metodo
+    let metodo = body.options
 
     switch (metodo) {
         case 'mixto':
-            res.json({ array: generator.mixto(body.x, body.a, body.c, body.m) })
+            res.json({ array: generator.arrayMixto(body.x, body.a, body.c, body.m) })
             break;
         case 'multiplicativo':
-            res.json({ array: generator.multiplicativo(body.x, body.a, body.m) })
+            res.json({ array: generator.arrayMultiplicativo(body.x, body.a, body.m) })
             break;
         default:
             break;
@@ -66,11 +68,8 @@ let get_data = (req, res) => {
 }
 
 let error = (req, res) => {
-    // let err = new Error('No encontrado')
-    // err.status = 404
-    // next(err)
     res.status(404)
-        .send({ url: req.originalUrl + 'no encontrado' })
+        .send({ url: req.originalUrl + ' no encontrado' })
 }
 
 module.exports = {
