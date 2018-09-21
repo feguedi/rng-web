@@ -37,18 +37,17 @@ let form_chartjs = (req, res) => {
 }
 
 let post_data = (req, res) => {
-    let body
+    let body, metodo
 
     try {
         body = req.body
+        metodo = body.options
     } catch (error) {
         res.status(400).render('error', {
             title: 'Error',
             message: 'Método no encontrado\n¿Seguro que es un método congruencial?'
         })
     }
-
-    let metodo = body.options
 
     switch (metodo) {
         case 'mixto':

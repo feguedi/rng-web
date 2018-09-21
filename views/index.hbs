@@ -8,13 +8,13 @@
             <div class="row d-flex justify-content-around" data-toggle="buttons">
                 <div class="col-xl-2 btn-group btn-group-toggle">
                     <label class="btn btn-outline-primary cong active">
-                        <input type="radio" id="cong-mixto" name="options" autocomplete="off" checked="">Congruencial
+                        <input type="radio" value="mixto" id="cong-mixto" name="options" autocomplete="off" checked="">Congruencial
                         Mixto
                     </label>
                 </div>
                 <div class="col-xl-2 btn-group btn-group-toggle">
                     <label class="btn btn-outline-primary cong">
-                        <input type="radio" id="cong-multiplicativo" name="options" autocomplete="off">Congruencial
+                        <input type="radio" value="multiplicativo" id="cong-multiplicativo" name="options" autocomplete="off">Congruencial
                         Multiplicativo
                     </label>
                 </div>
@@ -51,7 +51,7 @@
             </div>
             <div class="row d-flex justify-content-around">
                 <span style="padding-top: 3%;">
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalChart"
+                    <button type="submit" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalChart"
                         id="btn-generar">Generar</button>
                 </span>
             </div>
@@ -68,27 +68,7 @@
     </a>
 </footer>
 
-<div id="modalChart" class="modal-dialog modal-lg modal">
-    <div class="modal-content">
-        <canvas id="myChart" width="400" height="0"></canvas>
-    </div>
-    <div class="modal-footer">
-        <div class="row">
-            <div class="col-xl-3">
-                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="JavaScript Object Notation: formato de texto ligero para el intercambio de datos"
-                    aria-describedby="tooltip718878">JSON</button>
-            </div>
-            <div class="col-xl-3">
-                <button class="btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Comma-Separated Values: documento donde los datos son representados en forma de tabla, en las que las columnas se separan por comas y las filas por saltos de líneas"
-                    aria-describedby="tooltip718878">CSV</button>
-            </div>
-            <div class="col-xl-3">
-                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Formato de archivo que admite Microsoft Excel"
-                    aria-describedby="tooltip718878">XLSX</button>
-            </div>
-        </div>
-    </div>
-</div>
+{{> d3chart }}
 
 <!-- Modal Descripcion -->
 <div id="myModal" class="modal">
