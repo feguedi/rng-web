@@ -51,13 +51,16 @@ let post_data = (req, res) => {
 
     switch (metodo) {
         case 'mixto':
-            res.json({ array: generator.arrayMixto(body.x, body.a, body.c, body.m) })
-            break;
+            res.json({
+                num_uniformes: generator.arrayMixto(body.x, body.a, body.c, body.m),
+                sig_semilla: generator.siguienteSemillaMixto(body.x, body.a, body.c, body.m)
+            })
+            break
         case 'multiplicativo':
             res.json({ array: generator.arrayMultiplicativo(body.x, body.a, body.m) })
-            break;
+            break
         default:
-            break;
+            break
     }
 }
 

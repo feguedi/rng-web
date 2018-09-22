@@ -15,23 +15,23 @@ let multiplicador = document.getElementById('inlineMultiplicador')
 let semilla = document.getElementById('inlineSemilla')
 let modulo = document.getElementById('inlineModulo')
 
+$('#cong-mixto').click((e) => {
+    $('#cong-mixto').addClass('active')
+    $('#cong-multiplicativo').removeClass('active')
+    $('.caditiva-label').css({
+        'visibility': 'visible',
+        'display': 'inline'
+    })
+})
 
-
-cMixto.onclick = () => { // Cuando se presiona el tipo Congruencial Mixto
-    console.log("Se presionó congruencial mixto")
-}
-
-cMultiplicativo.onclick = () => { // Cuando se presiona el tipo Congruencial Multiplicativo
-    console.log("Se presionó congruencial multiplicativo")
-}
-
-btn.onclick = () => {
-    // $('#myChart').css({
-    //     'height': 400,
-    //     'visibility': 'visible'
-    // })
-    console.log("Se disparó el botón para generar la gráfica")
-}
+$('#cong-multiplicativo').click((e) => {
+    $('#cong-multiplicativo').addClass('active')
+    $('#cong-mixto').removeClass('active')
+    $('.caditiva-label').css({
+        'visibility': 'hidden',
+        'display': 'none'
+    })
+})
 
 span.onclick = () => {
     modal.style.display = 'none'

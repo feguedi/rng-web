@@ -5,19 +5,13 @@
 <div class="row" id="variables">
     <div class="col-xl-12">
         <form action="/data" method="post" id="form-variables">
-            <div class="row d-flex justify-content-around" data-toggle="buttons">
-                <div class="col-xl-2 btn-group btn-group-toggle">
-                    <label class="btn btn-outline-primary cong active">
-                        <input type="radio" value="mixto" id="cong-mixto" name="options" autocomplete="off" checked="">Congruencial
-                        Mixto
-                    </label>
-                </div>
-                <div class="col-xl-2 btn-group btn-group-toggle">
-                    <label class="btn btn-outline-primary cong">
-                        <input type="radio" value="multiplicativo" id="cong-multiplicativo" name="options" autocomplete="off">Congruencial
-                        Multiplicativo
-                    </label>
-                </div>
+            <div class="row d-flex justify-content-around btn-group btn-group-toggle" id="btn-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-primary cong active" id="cong-mixto">
+                    <input type="radio" value="mixto" name="options" checked>Congruencial Mixto
+                </label>
+                <label class="btn btn-outline-primary cong" id="cong-multiplicativo">
+                    <input type="radio" value="multiplicativo" name="options">Congruencial Multiplicativo
+                </label>
             </div>
             <div class="row d-flex justify-content-around">
                 <div class="col-lg-3 semilla">
@@ -34,7 +28,7 @@
                             placeholder="Multiplicador" />
                     </div>
                 </div>
-                <div class="col-lg-3 caditiva">
+                <div class="col-lg-3 caditiva caditiva-label">
                     <label for="inlineFormInputGroup" class="sr-only caditiva">Constante Aditiva</label>
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0 caditiva">
                         <input name="c" type="number" maxlength="10" class="form-control form-control-lg caditiva" id="inlineCAditiva"
