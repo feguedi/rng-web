@@ -6,9 +6,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const app = express()
 const favicon = require('serve-favicon')
-const routes = require('./routes').routes
-const router = require('./routes').router
-    // const port = require('./config')
+const routes = require('./routes')
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -19,6 +17,5 @@ hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs')
 
 routes(app)
-    // app.use('/', router)
 
 app.listen(process.env.PORT, () => { console.log(`Escuchando peticiones en el puerto ${ process.env.PORT }`) })

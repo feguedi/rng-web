@@ -57,7 +57,10 @@ let post_data = (req, res) => {
             })
             break
         case 'multiplicativo':
-            res.json({ array: generator.arrayMultiplicativo(body.x, body.a, body.m) })
+            res.json({
+                num_uniformes: generator.arrayMultiplicativo(body.x, body.a, body.m),
+                sig_semilla: generator.siguienteSemillaMultiplicativo(body.x, body.a, body.m)
+            })
             break
         default:
             break
@@ -70,7 +73,7 @@ let get_data = (req, res) => {
 
 let error = (req, res) => {
     res.status(404)
-        .send({ url: req.originalUrl + ' no encontrado' })
+        .render('error', { title: 'Error 404', message: req.originalUrl + ' no encontrado' })
 }
 
 module.exports = {

@@ -4,7 +4,7 @@
 
 <div class="row" id="variables">
     <div class="col-xl-12">
-        <form action="/data" method="post" id="form-variables">
+        <form action="" method="" id="form-variables">
             <div class="row d-flex justify-content-around btn-group btn-group-toggle" id="btn-toggle" data-toggle="buttons">
                 <label class="btn btn-outline-primary cong active" id="cong-mixto">
                     <input type="radio" value="mixto" name="options" checked>Congruencial Mixto
@@ -43,20 +43,20 @@
                     </div>
                 </div>
             </div>
-            <div class="row d-flex justify-content-around">
-                <span style="padding-top: 3%;">
-                    <button type="submit" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalChart"
-                        id="btn-generar">Generar</button>
-                </span>
-            </div>
         </form>
+        <div class="row d-flex justify-content-around">
+            <span style="padding-top: 3%;">
+                <button onclick="open_modal()" {{!-- type="button" --}} class="btn btn-primary btn-lg" {{!-- data-toggle="modal" data-target="#modalChart" --}}
+                    id="btn-generar">Generar</button>
+            </span>
+        </div>
     </div>
 </div>
 
 {{> jtfooter }}
 
 <footer class="creditos">
-    <a href="https://github.com/feguedi/rng-web" class="btn btn-outline-primary">
+    <a href="https://github.com/feguedi/rng-web" class="btn btn-outline-primary" target="_blank">
         <span class="fa fa-github-alt mr-2"></span>
         Repositorio en Github
     </a>
@@ -65,24 +65,26 @@
 {{> d3chart }}
 
 <!-- Modal Descripcion -->
-<div id="myModal" class="modal">
-    <span class="close">&times;</span>
+<div id="modalDescription" class="modal-dialog modal-lg modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
 
-    <!-- Tarjeta de descripción -->
-    <div class="card">
-        <div class="card-header">
-            {{ metodo }}
-        </div>
-        <div class="card-body">
-            <blockquote class="card-blockquote">
-                <p>{{ descripcion-metodo }}</p>
-                <footer>
-                    <cite title="Author">Raúl Coss Bú</cite>
-                </footer>
-            </blockquote>
+        <!-- Tarjeta de descripción -->
+        <div class="card">
+            <div class="card-header">
+                {{ metodo }}
+            </div>
+            <div class="card-body">
+                <blockquote class="card-blockquote">
+                    <p>{{ descripcion-metodo }}</p>
+                    <footer>
+                        <cite title="Author">Raúl Coss Bú</cite>
+                    </footer>
+                </blockquote>
+            </div>
         </div>
     </div>
-    <div id="caption"></div>
+    {{!-- <div id="caption"></div> --}}
 </div>
 
 {{> footer }}
