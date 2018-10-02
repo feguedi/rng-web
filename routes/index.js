@@ -23,6 +23,9 @@ let routes = app => {
 
     app.route('*')
         .get(controllers.error)
+
+    app.route('/test')
+        .get(controllers.test)
 }
 
 module.exports = routes

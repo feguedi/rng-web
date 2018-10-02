@@ -39,8 +39,7 @@ let arrays = (...args) => {
 }
 
 let semillas = (...args) => {
-    let array = [],
-        x, a, c, m
+    let x, a, c, m
     if (args.length == 3) {
         x = args[0]
         a = args[1]
