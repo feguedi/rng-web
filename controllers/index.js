@@ -68,7 +68,34 @@ let post_data = (req, res) => {
 }
 
 let get_data = (req, res) => {
-    res.send({ data: [12, 19, 3, 5, 2, 3] })
+    // res.send({ data: [12, 19, 3, 5, 2, 3] })
+    let body, metodo
+    try {
+        body = req.query
+        metodo = body.options
+    } catch (error) {
+        res.status(404).render('error', {
+            title: 'Error',
+            message: 'Método no válido\n¿Seguro que es un método congruencial?'
+        })
+    }
+
+    switch (metodo) {
+        case 'mixto':
+            res.json({
+                num_uniformes: generator.arrayMixto(body.x, body.a, body.c, body.m),
+                sig_semilla: generator.siguienteSemillaMixto(body.x, body.a, body.c, body.m)
+            })
+            break
+        case 'multiplicativo':
+            res.json({
+                num_uniformes: generator.arrayMultiplicativo(body.x, body.a, body.m),
+                sig_semilla: generator.siguienteSemillaMultiplicativo(body.x, body.a, body.m)
+            })
+            break
+        default:
+            break
+    }
 }
 
 let error = (req, res) => {
