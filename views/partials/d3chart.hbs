@@ -7,7 +7,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <canvas id="myChart" width="400" height="0"></canvas>
+                <svg id="myChart" width="400" height="0"></svg>
             </div>
             <div class="modal-footer">
                 <div class="row d-flex justify-content-around">
@@ -40,7 +40,10 @@
                 </button>
             </div>
             <div class="modal-body d-flex justify-content-around">
-                <input type="number" name="num-col" id="num-col">
+                <label for="inlineFormInputGroup" class="sr-only">Número de columnas</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <input type="number" name="num-col" class="form-control form-control-lg" maxlength="4" id="num-col">
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-primary btn" id="btn-xlsx-dld">Descargar</button>

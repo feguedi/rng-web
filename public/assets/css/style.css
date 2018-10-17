@@ -179,3 +179,7 @@ body {
 #btn-toggle {
     margin-bottom: 10%;
 }
+
+#myChart {
+    border: 1px solid darkgrey;
+}
