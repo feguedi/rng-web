@@ -2,15 +2,6 @@
 const fs = require('fs')
 const generator = require('../generator')
 
-// let generadorD3 = (req, res) => {
-//     let generator = require('../generator')
-
-// }
-
-let createTempFile = () => {
-
-}
-
 let home = (req, res) => {
     res.render('layouts/index', { title: 'Random Number Generator' })
 }

@@ -15,11 +15,11 @@ Parte del proyecto es utilizar una API para que pueda generarse un archivo, ya s
   * Debe haber interacción para visualizar los datos
 
 * Agregar formulario donde le usuario pueda decidir, en caso de que decida el tipo de salida Excel, el número de columnas que desea ver en el archivo de salida (por comodidad)
+* Agregar salida de datos con un archivo de Excel, JSON o CSV
+* Para poder usar la librería SheetJS con Node [este es el tutorial](https://github.com/SheetJS/js-xlsx/tree/master/demos/server)
 
 * Una vez terminada la interfaz con Handlebars se mudará a ReactJS
 
 ### Back end
 
-* Agregar salida de datos con un archivo de Excel, JSON o CSV
-* Para poder usar la librería SheetJS con Node [este es el tutorial](https://github.com/SheetJS/js-xlsx/tree/master/demos/server)
 * Manejar los errores de servidor (40x y 50x) ya sea desde ProxyReverse o la aplicación en Node

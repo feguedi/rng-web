@@ -1,5 +1,5 @@
 {
-    "name": "rng-binomial",
+    "name": "rng-web",
     "version": "1.0.0",
     "description": "Generador de números pseudoaleatorios",
     "main": "app.js",

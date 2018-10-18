@@ -9,16 +9,21 @@ let spanXLSX = document.getElementsByClassName('close')[1]
 
 $(document).ready(() => {
     $("#num-col").keydown(e => {
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-             // Ctrl/cmd + A
+        console.log(`Presionada: ${ e.keyCode }`)
+            // retroceso, suprimir, escape y enter
+        if ($.inArray(e.keyCode, [46, 8, 27, 13]) !== -1 ||
+            // Ctrl/cmd + A
             (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-             // Ctrl/cmd + C
+            // Ctrl/cmd + C
             (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-             // Ctrl/cmd + X
+            // Ctrl/cmd + X
             (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
-             // home, end, left, right
+            // inicio, fin, izquierda, derecha
             (e.keyCode >= 35 && e.keyCode <= 39)) {
-                 return
+            return
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault()
         }
     })
 })
@@ -108,8 +113,8 @@ let fetch_data = () => {
 
     $.ajax({
         type: 'GET',
-        url: `/data?x=${x}&a=${a}&c=${c}&m=${m}&options=${options}`,
-        timeout: 2000,
+        url: `/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`,
+        // timeout: 2000,
         beforeSend: xhr => {
             // TODO: Agregar algún elemento en la UI que enseñe al usuario que 
             // se está solicitando la información (un spin, por ejemplo)
@@ -125,20 +130,22 @@ let fetch_data = () => {
                 if (!val(e)) $(this).parent().addClass('border-danger')
                 else $(this).parent().removeClass('border-danger')
             })
-
-            if (xhr.overrideMimeType) xhr.overrideMimeType("application/x-www-form-encoded")
         },
-        complete: () => {
+        complete: data => {
             // TODO: Agregar elemento que avise al usuario que el proceso terminó
             // o simplemente limpiar el formulario a donde será enviado la 
             // información
             console.log(`Terminado proceso de AJAX`)
-        },
-        success: data => {
-            if (data !== null || data !== undefined || data != '')
-                responseObject = JSON.parse(data)
-            else
+            if (data !== null || data !== undefined || data != '') {
+                console.log(`fetch_data: complete (${ JSON.parse(data) })`)
+                responseObject = data
+            } else {
+                console.log(`fetch_data: Fallo en la petición de datos`)
                 responseObject = null
+            }
+        },
+        success: () => {
+            console.log(`Correcta petición AJAX`)
         },
         error: xhr => {
             // TODO: elemento avisando al usuario que hubo un error
@@ -150,17 +157,55 @@ let fetch_data = () => {
     return responseObject
 }
 
+let get_data = () => {
+    let options = form.elements.options.value
+    let x = form.elements.x.value
+    let a = form.elements.a.value
+    let c = form.elements.c.value
+    let m = form.elements.m.value
+
+    let responseObject
+
+    $.get(`/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`)
+        .done(() => {
+            console.log(`get_data: La petición GET salió correcta`)
+        })
+        .fail((data, status) => {
+            console.log(`get_data: Algo falló en la petición`)
+            console.log(`get_data: status (${ status })`)
+            responseObject = null
+        })
+        .always(data => {
+            responseObject = data
+        })
+
+    return responseObject
+}
+
 const export_xlsx = () => {
     let data, wb, out
+        // TODO: Agregar como filtro el número de columnas en las que el usuario desea
+        // visualizar el archivo final
+        // wb = data !== null ? create_file(data) : () => { break; return false; }
     try {
         data = fetch_data()
-            // TODO: Agregar como filtro el número de columnas en las que el usuario desea
-            // visualizar el archivo final
-            // wb = data !== null ? create_file(data) : () => { break; return false; }
+    } catch (error) {
+        console.log(`export_xlsx: No se pudo agregar datos(fetch_data())`)
+        console.log(`error: ${ error }`)
+        return false
+    }
+    try {
         wb = create_file(data)
+    } catch (error) {
+        console.log(`export_xlsx: No se pudo crear el archivo con los datos(create_file(data))`)
+        console.log(`error: ${ error }`)
+        return false
+    }
+    try {
         out = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' })
     } catch (error) {
-        console.log(`export_xlsx: No se pudo agregar datos(fetch_cata())`)
+        console.log(`export_xlsx: No se pudo escribir el archivo XLSX`)
+        console.log(`error: ${ error }`)
         return false
     }
     return out
@@ -193,9 +238,33 @@ let create_file = (...args) => {
     let yyyy = current_date()[0]
     let mm = current_date()[1]
     let dd = current_date()[2]
-    let wb = XLSX.utils.book_new()
-    let data_uniformes = [args[0]]
-    let data_semillas = [args[1]]
+    let num_col, wb, data_uniformes, data_semillas
+    try {
+        num_col = parseInt($("#num-col").text())
+    } catch (error) {
+        console.log(`create_file: No se pudo determinar un número de columnas`)
+        console.log(`error: ${ error }`)
+    }
+    try {
+        wb = XLSX.utils.book_new()
+    } catch (error) {
+        console.log(`create_file: No se pudo crear el libro nuevo`)
+        console.log(`error: ${ error }`)
+    }
+    try {
+        console.log(`create_file: data_uniformes: ${ args[0] }`)
+        data_uniformes = num_col > 0 ? [args[0]] : [orderCol(args[0], num_col)]
+    } catch (error) {
+        console.log(`create_file: No se pudieron determinar los datos de los números uniformes`)
+        console.log(`error: ${ error }`)
+    }
+    try {
+        console.log(`create_file: data_semillas: ${ args[1] }`)
+        data_semillas = num_col > 0 ? [args[1]] : [orderCol(args[1], num_col)]
+    } catch (error) {
+        console.log(`create_file: No se pudieron determinar los datos de las semillas`)
+        console.log(`error: ${ error }`)
+    }
 
     let ws_uniformes = XLSX.utils.aoa_to_sheet(data_uniformes)
     let ws_semillas = XLSX.utils.aoa_to_sheet(data_semillas)
@@ -215,3 +284,24 @@ let create_file = (...args) => {
 
     return wb
 }
+
+const orderCol = (arr = [], col) => {
+    let final = []
+    let element = []
+    try {
+        for (let i = 0; i < arr.lenght; ++i) {
+            element.push(arr[i])
+            if ((i + 1) % col === 0) {
+                final.push(element)
+                element = []
+            }
+        }
+    } catch (error) {
+        console.log(`orderCol: Error al dividir los elementos según el número de columnas`)
+        console.log(`error: ${ error }`)
+        return false
+    }
+    return final
+}
+
+const isValid = str => !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str)
