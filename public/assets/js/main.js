@@ -79,6 +79,10 @@ $(spanXLSX).click(() => {
     close_modal(modalXLSX)
 })
 
+$("#btn-json").click(e => {
+    saveAs(new JSON)
+})
+
 $('#btn-xlsx-dld').click(e => {
     e.preventDefault()
     let yyyy = current_date()[0]
@@ -90,19 +94,19 @@ $('#btn-xlsx-dld').click(e => {
     let e_xlsx = export_xlsx()
     if (e_xlsx != false) {
         saveAs(new Blob([s2ab(e_xlsx)], { type: "application/octet-stream" }),
-            `rng-${yyyy}${mm}${dd}${hr}${mi}${sg}.xlsx`)
+            `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.xlsx`)
     }
 })
 
-let open_modal = elem => {
+const open_modal = elem => {
     elem.style.display = 'block'
 }
 
-let close_modal = elem => {
+const close_modal = elem => {
     elem.style.display = 'none'
 }
 
-let fetch_data = () => {
+const fetch_data = () => {
     let options = form.elements.options.value
     let x = form.elements.x.value
     let a = form.elements.a.value
@@ -116,7 +120,7 @@ let fetch_data = () => {
         url: `/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`,
         // timeout: 2000,
         beforeSend: xhr => {
-            // TODO: Agregar algún elemento en la UI que enseñe al usuario que 
+            // TODO: Agregar algún elemento en la UI que enseñe al usuario que
             // se está solicitando la información (un spin, por ejemplo)
             let obj = [x, a, c, m]
             let val = v => {
@@ -133,7 +137,7 @@ let fetch_data = () => {
         },
         complete: data => {
             // TODO: Agregar elemento que avise al usuario que el proceso terminó
-            // o simplemente limpiar el formulario a donde será enviado la 
+            // o simplemente limpiar el formulario a donde será enviado la
             // información
             console.log(`Terminado proceso de AJAX`)
             if (data !== null || data !== undefined || data != '') {
@@ -157,7 +161,7 @@ let fetch_data = () => {
     return responseObject
 }
 
-let get_data = () => {
+const get_data = () => {
     let options = form.elements.options.value
     let x = form.elements.x.value
     let a = form.elements.a.value
@@ -220,7 +224,7 @@ const s2ab = s => {
     return buf
 }
 
-let current_date = () => {
+const current_date = () => {
     let today = new Date()
     let sg = today.getSeconds()
     let mi = today.getMinutes()
@@ -234,7 +238,7 @@ let current_date = () => {
     return [yyyy, mm, dd, hr, mi, sg]
 }
 
-let create_file = (...args) => {
+const create_file = (...args) => {
     let yyyy = current_date()[0]
     let mm = current_date()[1]
     let dd = current_date()[2]

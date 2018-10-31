@@ -103,22 +103,22 @@ body {
 
 @-webkit-keyframes slideIn {
     from {
-        bottom: -300px;
+        top: -300px;
         opacity: 0
     }
     to {
-        bottom: 0;
+        top: 0;
         opacity: 1
     }
 }
 
 @keyframes slideIn {
     from {
-        bottom: -300px;
+        top: -300px;
         opacity: 0
     }
     to {
-        bottom: 0;
+        top: 0;
         opacity: 1
     }
 }

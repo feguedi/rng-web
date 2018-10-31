@@ -61,6 +61,14 @@ let post_data = (req, res) => {
 let get_data = (req, res) => {
     // res.send({ data: [12, 19, 3, 5, 2, 3] })
     let body, metodo
+
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+        res.status(400).render('error', {
+            title: 'Error',
+            message: 'Enviado ningún valor\n"Bad request"'
+        })
+    }
+
     try {
         body = req.query
         metodo = body.options
@@ -70,6 +78,9 @@ let get_data = (req, res) => {
             message: 'Método no válido\n¿Seguro que es un método congruencial?'
         })
     }
+
+    console.log(`get_data: body: ${ body }`)
+    console.log(`get_data: metodo: ${ metodo }`)
 
     switch (metodo) {
         case 'mixto':
