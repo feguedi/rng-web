@@ -7,6 +7,8 @@ let form = document.getElementById('form-variables')
 let spanOptions = document.getElementsByClassName('close')[0]
 let spanXLSX = document.getElementsByClassName('close')[1]
 
+let yyyy, mm, dd, hr, mi, sg
+
 $(document).ready(() => {
     $("#num-col").keydown(e => {
         console.log(`Presionada: ${ e.keyCode }`)
@@ -80,17 +82,20 @@ $(spanXLSX).click(() => {
 })
 
 $("#btn-json").click(e => {
-    saveAs(new JSON)
+    let data = get_data()
+    saveAs(new Blob([data], { type: "text/plain" }),
+        `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.json`)
+})
+
+$("#btn-csv").click(e => {
+    let data = get_data()
+    saveAs(new Blob([data], { type: "text/plain" }),
+        `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.json`)
 })
 
 $('#btn-xlsx-dld').click(e => {
     e.preventDefault()
-    let yyyy = current_date()[0]
-    let mm = current_date()[1]
-    let dd = current_date()[2]
-    let hr = current_date()[3]
-    let mi = current_date()[4]
-    let sg = current_date()[5]
+    current_date()
     let e_xlsx = export_xlsx()
     if (e_xlsx != false) {
         saveAs(new Blob([s2ab(e_xlsx)], { type: "application/octet-stream" }),
@@ -125,21 +130,23 @@ const fetch_data = () => {
             let obj = [x, a, c, m]
             let val = v => {
                 if (v !== null && v != 0 && v != '') return true
-                else return false
             }
 
-            // Las funciones flecha no tienen manera de
-            // manejar los elementos 'this' adecuadamente
-            obj.forEach(function(e) {
-                if (!val(e)) $(this).parent().addClass('border-danger')
-                else $(this).parent().removeClass('border-danger')
+            obj.forEach(e => {
+                let elem = form.elements
+                if (val(e)) elem.removeClass('border-danger')
+                else {
+                    elem.addClass('border-danger')
+                    break
+                }
             })
         },
         complete: data => {
             // TODO: Agregar elemento que avise al usuario que el proceso terminó
             // o simplemente limpiar el formulario a donde será enviado la
             // información
-            console.log(`Terminado proceso de AJAX`)
+            console.log(`fetch_data: Terminado proceso de AJAX`)
+            console.log(`fetch_data: data: ${ data }`)
             if (data !== null || data !== undefined || data != '') {
                 console.log(`fetch_data: complete (${ JSON.parse(data) })`)
                 responseObject = data
@@ -192,6 +199,7 @@ const export_xlsx = () => {
         // visualizar el archivo final
         // wb = data !== null ? create_file(data) : () => { break; return false; }
     try {
+        console.log(`export_xlsx: Enviando petición`)
         data = fetch_data()
     } catch (error) {
         console.log(`export_xlsx: No se pudo agregar datos(fetch_data())`)
@@ -226,22 +234,18 @@ const s2ab = s => {
 
 const current_date = () => {
     let today = new Date()
-    let sg = today.getSeconds()
-    let mi = today.getMinutes()
-    let hr = today.getHours()
-    let dd = today.getDate()
-    let mm = today.getMonth()
-    let yyyy = today.getFullYear()
+    sg = today.getSeconds()
+    mi = today.getMinutes()
+    hr = today.getHours()
+    dd = today.getDate()
+    mm = today.getMonth()
+    yyyy = today.getFullYear()
     if (dd < 10) dd = '0' + dd
     if (mm < 10) mm = '0' + mm
-
-    return [yyyy, mm, dd, hr, mi, sg]
 }
 
 const create_file = (...args) => {
-    let yyyy = current_date()[0]
-    let mm = current_date()[1]
-    let dd = current_date()[2]
+    current_date()
     let num_col, wb, data_uniformes, data_semillas
     try {
         num_col = parseInt($("#num-col").text())
@@ -257,14 +261,14 @@ const create_file = (...args) => {
     }
     try {
         console.log(`create_file: data_uniformes: ${ args[0] }`)
-        data_uniformes = num_col > 0 ? [args[0]] : [orderCol(args[0], num_col)]
+        data_uniformes = num_col > 0 ? [args[0]] : [order_columns(args[0], num_col)]
     } catch (error) {
         console.log(`create_file: No se pudieron determinar los datos de los números uniformes`)
         console.log(`error: ${ error }`)
     }
     try {
         console.log(`create_file: data_semillas: ${ args[1] }`)
-        data_semillas = num_col > 0 ? [args[1]] : [orderCol(args[1], num_col)]
+        data_semillas = num_col > 0 ? [args[1]] : [order_columns(args[1], num_col)]
     } catch (error) {
         console.log(`create_file: No se pudieron determinar los datos de las semillas`)
         console.log(`error: ${ error }`)
@@ -289,7 +293,7 @@ const create_file = (...args) => {
     return wb
 }
 
-const orderCol = (arr = [], col) => {
+const order_columns = (arr = [], col) => {
     let final = []
     let element = []
     try {
@@ -301,11 +305,11 @@ const orderCol = (arr = [], col) => {
             }
         }
     } catch (error) {
-        console.log(`orderCol: Error al dividir los elementos según el número de columnas`)
+        console.log(`order_columns: Error al dividir los elementos según el número de columnas`)
         console.log(`error: ${ error }`)
         return false
     }
     return final
 }
 
-const isValid = str => !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str)
+const is_valid = str => !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str)
