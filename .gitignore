@@ -65,3 +65,4 @@ package-lock.json
 *.out
 
 .vscode/
+.well-known/
