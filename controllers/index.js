@@ -59,18 +59,17 @@ let post_data = (req, res) => {
 }
 
 let get_data = (req, res) => {
-    // res.send({ data: [12, 19, 3, 5, 2, 3] })
     let body, metodo
 
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).render('error', {
             title: 'Error',
-            message: 'Enviado ningún valor\n"Bad request"'
+            message: 'Ningún valor enviado\n"Bad request"'
         })
     }
 
     try {
-        body = req.query
+        body = req.body
         metodo = body.options
     } catch (error) {
         res.status(404).render('error', {
@@ -79,8 +78,8 @@ let get_data = (req, res) => {
         })
     }
 
-    console.log(`get_data: body: ${ body }`)
-    console.log(`get_data: metodo: ${ metodo }`)
+    console.log(`get_data: elementos de req:`)
+    Object.keys(req.body).forEach(key => console.log(`\t${ key }:\t\t${ req.body[key] }`))
 
     switch (metodo) {
         case 'mixto':
@@ -96,6 +95,10 @@ let get_data = (req, res) => {
             })
             break
         default:
+            res.render('error', {
+                title: 'Error',
+                message: 'Error 500\nInternal Server Error\n\n... eso y datos mal mandados'
+            })
             break
     }
 }

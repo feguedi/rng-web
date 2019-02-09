@@ -1,4 +1,5 @@
 'use strict'
+import { graph } from './graficadorD3.js'
 let modalDescription = document.getElementById('modalDescription')
 let modalChart = document.getElementById('modalChart')
 let modalXLSX = document.getElementById('modalOptions')
@@ -50,7 +51,17 @@ $('#cong-multiplicativo').click(() => {
 
 $('#btn-generar').click(() => {
     console.log(`Click en btn-generar`)
+    let options = form.elements.options.value
+    let x = form.elements.x.value
+    let a = form.elements.a.value
+    let c = form.elements.c.value
+    let m = form.elements.m.value
+    graph(x, a, c, m, options)
+    if(x <= 0 || a <= 0 || c <= 0 || m <= 0){
+        
+    } else {
     open_modal(modalChart)
+    }
 })
 
 $(spanOptions).click(() => {
@@ -111,6 +122,8 @@ const close_modal = elem => {
     elem.style.display = 'none'
 }
 
+const error_val = elem => { elem.style.display = '' }
+
 const fetch_data = () => {
     let options = form.elements.options.value
     let x = form.elements.x.value
@@ -137,7 +150,7 @@ const fetch_data = () => {
                 if (val(e)) elem.removeClass('border-danger')
                 else {
                     elem.addClass('border-danger')
-                    break
+                    // break
                 }
             })
         },
@@ -177,18 +190,33 @@ const get_data = () => {
 
     let responseObject
 
-    $.get(`/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`)
-        .done(() => {
-            console.log(`get_data: La petición GET salió correcta`)
-        })
-        .fail((data, status) => {
+    $.ajax({
+        url: `/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`,
+        dataType: 'json',
+        success: res => {
+            console.log(`get_data: La petición fue correcta`)
+            console.log(`get_data: ${ res }`)
+            responseObject = res
+        },
+        error: (req, status, err) => {
             console.log(`get_data: Algo falló en la petición`)
             console.log(`get_data: status (${ status })`)
-            responseObject = null
-        })
-        .always(data => {
-            responseObject = data
-        })
+            console.log(`get_data: error (${ err })`)
+        }
+    })
+
+    // $.get(`/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`)
+    //     .done(() => {
+    //         console.log(`get_data: La petición GET salió correcta`)
+    //     })
+    //     .fail((data, status) => {
+    //         console.log(`get_data: Algo falló en la petición`)
+    //         console.log(`get_data: status (${ status })`)
+    //         responseObject = null
+    //     })
+    //     .always(data => {
+    //         responseObject = data
+    //     })
 
     return responseObject
 }

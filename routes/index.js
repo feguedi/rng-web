@@ -1,6 +1,4 @@
 'use strict'
-const express = require('express')
-const controllers = require('../controllers')
 
 let routes = app => {
     const controllers = require('../controllers')
