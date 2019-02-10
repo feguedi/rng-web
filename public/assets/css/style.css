@@ -2,6 +2,11 @@ body {
     background-color: #F0F1FA;
 }
 
+.card-text,.card-title,.lead {
+    text-underline-position: unset;
+    -ms-text-underline-position: unset;
+}
+
 .tooltip {
     position: relative;
     display: inline-block;
@@ -96,6 +101,15 @@ body {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+#alerta-error {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    overflow: auto;
 }
 
 /* D3 */

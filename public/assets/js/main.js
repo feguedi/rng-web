@@ -5,15 +5,17 @@ let modalChart = document.getElementById('modalChart')
 let modalXLSX = document.getElementById('modalOptions')
 let btn = document.getElementById('btn-generar')
 let form = document.getElementById('form-variables')
+let alerta = document.getElementById('alerta-error')
 let spanOptions = document.getElementsByClassName('close')[0]
 let spanXLSX = document.getElementsByClassName('close')[1]
 
+let options, x, a, c, m
 let yyyy, mm, dd, hr, mi, sg
 
 $(document).ready(() => {
     $("#num-col").keydown(e => {
         console.log(`Presionada: ${ e.keyCode }`)
-            // retroceso, suprimir, escape y enter
+        // retroceso, suprimir, escape y enter
         if ($.inArray(e.keyCode, [46, 8, 27, 13]) !== -1 ||
             // Ctrl/cmd + A
             (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
@@ -51,31 +53,23 @@ $('#cong-multiplicativo').click(() => {
 
 $('#btn-generar').click(() => {
     console.log(`Click en btn-generar`)
-    let options = form.elements.options.value
-    let x = form.elements.x.value
-    let a = form.elements.a.value
-    let c = form.elements.c.value
-    let m = form.elements.m.value
+
+    if (!vals_validator()) open_element(modalChart)
     graph(x, a, c, m, options)
-    if(x <= 0 || a <= 0 || c <= 0 || m <= 0){
-        
-    } else {
-    open_modal(modalChart)
-    }
 })
 
 $(spanOptions).click(() => {
     console.log(`Click en close-btn`)
-    close_modal(modalChart)
+    close_element(modalChart)
 })
 
 $(window).click(event => {
     switch (event.target) {
         case modalChart:
-            close_modal(modalChart)
+            close_element(modalChart)
             break
         case modalXLSX:
-            close_modal(modalXLSX)
+            close_element(modalXLSX)
             break
         default:
             break
@@ -84,24 +78,31 @@ $(window).click(event => {
 
 $('#btn-xlsx').click(() => {
     console.log(`Click en btn-xlsx`)
-    open_modal(modalXLSX)
+    open_element(modalXLSX)
 })
 
 $(spanXLSX).click(() => {
     console.log(`Click en close-btn (xlsx)`)
-    close_modal(modalXLSX)
+    close_element(modalXLSX)
 })
 
 $("#btn-json").click(e => {
     let data = get_data()
-    saveAs(new Blob([data], { type: "text/plain" }),
+    current_date()
+    saveAs(new Blob([data], {
+            type: "text/plain"
+        }),
         `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.json`)
 })
 
 $("#btn-csv").click(e => {
     let data = get_data()
-    saveAs(new Blob([data], { type: "text/plain" }),
-        `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.json`)
+    // TODO: agregar conversor de JSON a CSV
+    current_date()
+    saveAs(new Blob([data], {
+            type: "text/plain"
+        }),
+        `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.csv`)
 })
 
 $('#btn-xlsx-dld').click(e => {
@@ -110,19 +111,68 @@ $('#btn-xlsx-dld').click(e => {
     let e_xlsx = export_xlsx()
     if (e_xlsx != false) {
         saveAs(new Blob([s2ab(e_xlsx)], { type: "application/octet-stream" }),
+                type: "application/octet-stream"
+            }),
             `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.xlsx`)
     }
 })
 
-const open_modal = elem => {
-    elem.style.display = 'block'
+const open_element = elem => elem.style.display = 'block'
+
+const close_element = elem => elem.style.display = 'none'
+
+const error_val = vals => {
+    let pre = ['Valores incorrectos: ', 'Valor incorrecto: ']
+    const last_element = (elem, array) => array[array.lenght - 1] === elem
+    $(alerta).html(() => `<h4 class="alert-heading">Error</h4>`)
+    $(alerta).append(`${ vals.lenght > 1 ? pre[0] : pre[1] }`)
+    vals.forEach(elem => {
+        $(alerta).append(() => {
+            return `${ elem }${ last_element(elem, vals) ? '' : ', ' }`
+        })
+    })
+    open_element(alerta)
+    setTimeout(close_element(alerta), 4000)
 }
 
-const close_modal = elem => {
-    elem.style.display = 'none'
-}
+const is_valid = v => v != null || v > 0 || v != "" || v != undefined
 
-const error_val = elem => { elem.style.display = '' }
+const m_is_valid = () => is_valid(m) && m > a && m > x || m > c
+
+const vals_validator = () => {
+    set_values()
+    let err_obj = []
+    let elements = [$('#inlineSemilla'), $('#inlineMultiplicador'), $('#inlineModulo')]
+
+    // elements.forEach(e => {
+    //     console.log(`vals_validator: ${ e.attr('id') }: ${ e.attr('name') }`)
+    // })
+
+    elements.forEach(e => {
+        console.log(`vals_validator: valor de ${ e.attr('placeholder') }: ${ e.val() }`)
+        if (is_valid(e.val())) e.removeClass('border-danger')
+        else {
+            console.log(`vals_validator: valor incorrecto ${ e.val() }`)
+            e.addClass('border-danger')
+            err_obj.push($(e).attr('placeholder'))
+        }
+    })
+
+    console.log(`vals_validator: valor de ${ $('#inlineCAditiva').attr('name') }: ${ $('#inlineCAditiva').val() }`)
+    if (options === 'mixto' && is_valid(c)) $('#inlineCAditiva').removeClass('border-danger')
+    else {
+        console.log(`vals_validator: valor incorrecto: ${ c }`)
+        $('#inlineCAditiva').addClass('border-danger')
+        err_obj.push('Constante aditiva')
+    }
+
+    err_obj.forEach(e => console.log(`vals_validator: err_obj: ${ e }`))
+
+    if (err_obj.length > 0) {
+        error_val(err_obj)
+        return false
+    }
+}
 
 const fetch_data = () => {
     let options = form.elements.options.value
@@ -182,53 +232,34 @@ const fetch_data = () => {
 }
 
 const get_data = () => {
-    let options = form.elements.options.value
-    let x = form.elements.x.value
-    let a = form.elements.a.value
-    let c = form.elements.c.value
-    let m = form.elements.m.value
-
-    let responseObject
-
     $.ajax({
         url: `/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`,
         dataType: 'json',
+        beforeSend: xhr => {
+            vals_validator()
+        },
         success: res => {
             console.log(`get_data: La petición fue correcta`)
             console.log(`get_data: ${ res }`)
-            responseObject = res
+            return res
         },
         error: (req, status, err) => {
             console.log(`get_data: Algo falló en la petición`)
             console.log(`get_data: status (${ status })`)
             console.log(`get_data: error (${ err })`)
+            return null
         }
     })
-
-    // $.get(`/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`)
-    //     .done(() => {
-    //         console.log(`get_data: La petición GET salió correcta`)
-    //     })
-    //     .fail((data, status) => {
-    //         console.log(`get_data: Algo falló en la petición`)
-    //         console.log(`get_data: status (${ status })`)
-    //         responseObject = null
-    //     })
-    //     .always(data => {
-    //         responseObject = data
-    //     })
-
-    return responseObject
 }
 
 const export_xlsx = () => {
     let data, wb, out
-        // TODO: Agregar como filtro el número de columnas en las que el usuario desea
-        // visualizar el archivo final
-        // wb = data !== null ? create_file(data) : () => { break; return false; }
+    // TODO: Agregar como filtro el número de columnas en las que el usuario desea
+    // visualizar el archivo final
+    // wb = data !== null ? create_file(data) : () => { break; return false; }
     try {
         console.log(`export_xlsx: Enviando petición`)
-        data = fetch_data()
+        data = get_data()
     } catch (error) {
         console.log(`export_xlsx: No se pudo agregar datos(fetch_data())`)
         console.log(`error: ${ error }`)
@@ -260,6 +291,14 @@ const s2ab = s => {
     return buf
 }
 
+const set_values = () => {
+    options = form.elements.options.value
+    x = form.elements.x.value
+    a = form.elements.a.value
+    c = form.elements.c.value
+    m = form.elements.m.value
+}
+
 const current_date = () => {
     let today = new Date()
     sg = today.getSeconds()
@@ -273,8 +312,9 @@ const current_date = () => {
 }
 
 const create_file = (...args) => {
-    current_date()
     let num_col, wb, data_uniformes, data_semillas
+    current_date()
+
     try {
         num_col = parseInt($("#num-col").text())
     } catch (error) {
@@ -340,4 +380,4 @@ const order_columns = (arr = [], col) => {
     return final
 }
 
-const is_valid = str => !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str)
+const str_is_valid = str => !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str)
