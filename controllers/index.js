@@ -43,14 +43,16 @@ let post_data = (req, res) => {
     switch (metodo) {
         case 'mixto':
             res.json({
-                num_uniformes: generator.arrayMixto(body.x, body.a, body.c, body.m),
-                sig_semilla: generator.siguienteSemillaMixto(body.x, body.a, body.c, body.m)
+                data: generator.arrayMixto(body.x, body.a, body.c, body.m),
+                // num_uniformes: generator.arrayMixto(body.x, body.a, body.c, body.m),
+                // sig_semilla: generator.siguienteSemillaMixto(body.x, body.a, body.c, body.m)
             })
             break
         case 'multiplicativo':
             res.json({
-                num_uniformes: generator.arrayMultiplicativo(body.x, body.a, body.m),
-                sig_semilla: generator.siguienteSemillaMultiplicativo(body.x, body.a, body.m)
+                data: generator.arrayMultiplicativo(body.x, body.a, body.m),
+                // num_uniformes: generator.arrayMultiplicativo(body.x, body.a, body.m),
+                // sig_semilla: generator.siguienteSemillaMultiplicativo(body.x, body.a, body.m)
             })
             break
         default:
@@ -84,28 +86,25 @@ let get_data = (req, res) => {
     switch (metodo) {
         case 'mixto':
             res.json({
-                num_uniformes: generator.arrayMixto(body.x, body.a, body.c, body.m),
-                sig_semilla: generator.siguienteSemillaMixto(body.x, body.a, body.c, body.m)
+                data: generator.arrayMixto(body.x, body.a, body.c, body.m),
             })
             break
         case 'multiplicativo':
             res.json({
-                num_uniformes: generator.arrayMultiplicativo(body.x, body.a, body.m),
-                sig_semilla: generator.siguienteSemillaMultiplicativo(body.x, body.a, body.m)
+                data: generator.arrayMultiplicativo(body.x, body.a, body.m),
             })
             break
         default:
             res.render('error', {
                 title: 'Error',
-                message: 'Error 500\nInternal Server Error\n\n... eso y datos mal mandados'
+                message: 'Error 500\nInternal Server Error\n\n... muy probablemente por datos mal mandados'
             })
             break
     }
 }
 
 let error = (req, res) => {
-    res.status(404)
-        .render('error', { title: 'Error 404', message: req.originalUrl + ' no encontrado' })
+    res.status(404).render('error', { title: 'Error 404', message: `Error\nURL ${ req.originalUrl } no encontrado` })
 }
 
 module.exports = {

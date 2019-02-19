@@ -1,5 +1,5 @@
 'use strict'
 
-let value = (x, a, c, m) => (a * x + c) % m
+const value = (x, a, c, m) => (a * x + Number(c)) % m
 
 module.exports = value

@@ -3,34 +3,17 @@ const mixto = require('./mixto')
 const multiplicativo = require('./multiplicativo')
 const vldt = require('./validator')
 
-let arrays = (...args) => {
-    let array = [],
-        x, a, c, m
-    if (args.length == 4) {
-        x = args[0]
-        a = args[1]
-        c = args[2]
-        m = args[3]
-    } else if (args.length == 3) {
-        x = args[0]
-        a = args[1]
-        m = args[2]
-    }
+const arrays = (...args) => {
+    let array = []
+    let x = args[0]
+    let a = args[1]
+    let c = args.length == 4 ? args[2] : null
+    let m = args.length == 4 ? args[3] : args[2]
     try {
         for (let i = 0; i < m; ++i) {
-            switch (args.length) {
-                case 3:
-                    array.push(multiplicativo(x, a, m))
-                    break
-                case 4:
-                    array.push(mixto(x, a, c, m))
-                    break
-                default:
-                    break
-            }
-            x = array[array.length - 1]
+            if (c) array.push(Number(mixto(i > 0 ? array[i - 1] : x, a, c, m).toFixed(4)))
+            else array.push(Number(multiplicativo(i > 0 ? array[i - 1] : x, a, m).toFixed(4)))
         }
-        array.forEach((item) => item = Number(item.toFixed(4)))
         return array
     } catch (error) {
         console.log(`arrays: Error en el envío de datos al arreglo: ${ error }`)
@@ -38,7 +21,7 @@ let arrays = (...args) => {
     }
 }
 
-let semillas = (...args) => {
+const semillas = (...args) => {
     let x, a, c, m
     if (args.length == 3) {
         x = args[0]
@@ -55,15 +38,14 @@ let semillas = (...args) => {
         for (let i = 0; i < m; ++i) {
             switch (args.length) {
                 case 3:
-                    array.push(multiplicativo(x, a, m))
+                    array.push(multiplicativo(i > 0 ? array[i - 1] : x, a, m))
                     break
                 case 4:
-                    array.push(mixto(x, a, c, m))
+                    array.push(mixto(i > 0 ? array[i - 1] : x, a, c, m))
                     break
                 default:
                     break
             }
-            x = array[array.length - 1]
         }
         return array
     } catch (error) {
@@ -72,7 +54,7 @@ let semillas = (...args) => {
     }
 }
 
-let generator = {
+const generator = {
     soloMultiplicativo: (x, a, m) => multiplicativo(x, a, m),
 
     arrayMultiplicativo: (x, a, m) => arrays(x, a, m),
