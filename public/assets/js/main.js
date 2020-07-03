@@ -109,13 +109,21 @@ $('#btn-xlsx-dld').click(e => {
     e.preventDefault()
     current_date()
     let e_xlsx = export_xlsx()
-    if (e_xlsx != false) {
-        saveAs(new Blob([s2ab(e_xlsx)], { type: "application/octet-stream" }),
-                type: "application/octet-stream"
-            }),
-            `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.xlsx`)
+    if (e_xlsx) {
+        exportToXLSX(e_xlsx)
     }
 })
+
+const exportToXLSX = jsonData => {
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    console.log(`jsonData: ${jsonData}`)
+    const filteredData = jsonData
+    const ws = XLSX.utils.json_to_sheet(filteredData)
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+    const data = new Blob([excelBuffer], { type: fileType })
+    saveAs(data, `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.xlsx`)
+}
 
 const open_element = elem => elem.style.display = 'block'
 
@@ -254,7 +262,7 @@ const get_data = () => {
 
 const export_xlsx = () => {
     let data, wb, out
-    // TODO: Agregar como filtro el número de columnas en las que el usuario desea
+    // TODO: Agregar filtro el número de columnas en las que el usuario desea
     // visualizar el archivo final
     // wb = data !== null ? create_file(data) : () => { break; return false; }
     try {
@@ -300,7 +308,7 @@ const set_values = () => {
 }
 
 const current_date = () => {
-    let today = new Date()
+    const today = new Date()
     sg = today.getSeconds()
     mi = today.getMinutes()
     hr = today.getHours()

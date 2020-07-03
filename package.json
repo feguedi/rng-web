@@ -5,7 +5,8 @@
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon app.js -e js,hbs,html,css"
+        "start": "node app",
+        "dev": "nodemon app.js -e js,hbs,html,css"
     },
     "repository": {
         "type": "git",
@@ -18,19 +19,22 @@
     },
     "homepage": "https://github.com/feguedi/rng-web#readme",
     "dependencies": {
-        "async": "^2.6.1",
-        "body-parser": "^1.18.3",
-        "d3": "~4.13.0",
-        "express": "^4.16.3",
-        "hbs": "^4.0.1",
-        "request": "^2.88.0",
+        "body-parser": "^1.19.0",
+        "d3": "^4.13.0",
+        "express": "^4.17.1",
+        "hbs": "^4.1.1",
         "serve-favicon": "^2.5.0",
-        "xlsx": "^0.14.0"
+        "xlsx": "^0.14.5"
     },
     "devDependencies": {
-        "eslint": "^5.5.0",
-        "jshint": "^2.9.6",
-        "jslint": "^0.12.0",
-        "nodemon": "^1.18.4"
+        "dotenv": "^8.2.0",
+        "eslint": "^5.16.0",
+        "jshint": "^2.11.1",
+        "jslint": "^0.12.1",
+        "nodemon": "^1.19.4"
+    },
+    "resolutions": {
+        "eslint/**/lodash": "*",
+        "jshint/lodash": "*"
     }
 }

@@ -1,5 +1,6 @@
 'use strict'
-require('./config')
+require('dotenv').config({ silent: true })
+const PORT = process.env.PORT || 8010
 const express = require('express')
 const hbs = require('hbs')
 const bodyParser = require('body-parser')
@@ -18,4 +19,4 @@ app.set('view engine', 'hbs')
 
 routes(app)
 
-app.listen(process.env.PORT, () => { console.log(`Escuchando peticiones en el puerto ${ process.env.PORT }`) })
+app.listen(PORT, () => { console.log(`Escuchando peticiones en el puerto ${ PORT }`) })

@@ -196,7 +196,7 @@ path {
 }
 
 .h1-title {
-    padding-bottom: 15%;
+    padding-bottom: 4rem;
     /* margin-left: 4rem; */
 }
 
@@ -211,4 +211,8 @@ path {
 
 #myChart {
     border: 1px solid darkgrey;
+}
+
+a > .card > .card-body:hover {
+    text-decoration: none;
 }
