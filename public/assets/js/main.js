@@ -53,7 +53,7 @@ $('#cong-multiplicativo').click(() => {
 
 $('#btn-generar').click(() => {
     console.log(`Click en btn-generar`)
-
+    set_values()
     if (!vals_validator()) open_element(modalChart)
     graph(x, a, c, m, options)
 })
@@ -87,21 +87,59 @@ $(spanXLSX).click(() => {
 })
 
 $("#btn-json").click(e => {
-    let data = get_data()
+    let data, blob
+    try {
+        data = JSON.parse(get_data().data)
+        console.log(`btn-json: datos: ${ data }`)
+    } catch (error) {
+        console.log(`btn-json: error: ${ error }`)
+        return
+    }
     current_date()
-    saveAs(new Blob([data], {
-            type: "text/plain"
-        }),
-        `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.json`)
+    blob = new Blob([data], { type: "text/plain;charset=utf-8" })
+    saveAs(blob, `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.json`)
+
+    // var saveData = (function () {
+    //     var a = document.createElement("a");
+    //     document.body.appendChild(a);
+    //     a.style = "display: none";
+    //     return function (data, fileName) {
+    //         var json = JSON.stringify(data),
+    //             blob = new Blob([json], { type: "octet/stream" }),
+    //             url = window.URL.createObjectURL(blob);
+    //         a.href = url;
+    //         a.download = fileName;
+    //         a.click();
+    //         window.URL.revokeObjectURL(url);
+    //     };
+    // }());
+
+    // var data = {
+    //         x: 42,
+    //         s: "hello, world",
+    //         d: new Date()
+    //     },
+    //     fileName = "my-download.json";
+
+    // saveData(data, fileName);
 })
 
 $("#btn-csv").click(e => {
-    let data = get_data()
+    let data = get_data().data
     // TODO: agregar conversor de JSON a CSV
     current_date()
-    saveAs(new Blob([data], {
-            type: "text/plain"
-        }),
+    data.join(",")
+
+    // let csvContent = "data:text/csv;charset=utf-8,"
+    // data.forEach((arr, index) => {
+    //     let dataString = arr.join(",")
+    //     csvContent += index < arr.lenght ? dataString + "\n" : dataString
+    //  })
+
+    // var encodedUri = encodeURI(csvContent);
+    // window.open(encodedUri);
+    
+    saveAs(new Blob([data], { type: "text/plain" }),
         `rng-${ yyyy }${ mm }${ dd }${ hr }${ mi }${ sg }.csv`)
 })
 
@@ -148,7 +186,7 @@ const is_valid = v => v != null || v > 0 || v != "" || v != undefined
 const m_is_valid = () => is_valid(m) && m > a && m > x || m > c
 
 const vals_validator = () => {
-    set_values()
+    // set_values()
     let err_obj = []
     let elements = [$('#inlineSemilla'), $('#inlineMultiplicador'), $('#inlineModulo')]
 
@@ -183,12 +221,7 @@ const vals_validator = () => {
 }
 
 const fetch_data = () => {
-    let options = form.elements.options.value
-    let x = form.elements.x.value
-    let a = form.elements.a.value
-    let c = form.elements.c.value
-    let m = form.elements.m.value
-
+    set_values()
     let responseObject
 
     $.ajax({
@@ -239,26 +272,79 @@ const fetch_data = () => {
     return responseObject
 }
 
-const get_data = () => {
-    $.ajax({
-        url: `/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`,
-        dataType: 'json',
-        beforeSend: xhr => {
-            vals_validator()
-        },
-        success: res => {
-            console.log(`get_data: La petición fue correcta`)
-            console.log(`get_data: ${ res }`)
-            return res
-        },
-        error: (req, status, err) => {
-            console.log(`get_data: Algo falló en la petición`)
-            console.log(`get_data: status (${ status })`)
-            console.log(`get_data: error (${ err })`)
-            return null
+const get_data = async () => {
+    set_values()
+    console.log(`get_data: enviando solicitud`)
+    // const url = `/data?x=${ x }&a=${ a }${ options == 'mixto' ? '&c=' + c : '' }&m=${ m }&options=${ options }`
+    const url = `/data`
+    // const req = await fetch(url).then(data => data.json()).then(res => console.log(`get_data: ${ res }`)).catch(err => console.log(`get_data: error: ${ err }`))
+    let body = options == 'mixto' ? { x, a, c, m, options } : { x, a, m, options }
+    const otherPrms = {
+        method: 'GET',
+        body,
+        //     body: undefined,
+        //     body: JSON.stringify(options == 'mixto' ? {
+        //     x,
+        //     a,
+        //     c,
+        //     m,
+        //     options
+        // } : {
+        //     x,
+        //     a,
+        //     m,
+        //     options
+        // }),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+            //   'Content-Type': 'application/json'
         }
-    })
+    }
+    const res = await fetch(url, otherPrms).catch(err => console.log(`get_data: error: ${ err }`))
+    return res
+
+    // fetch(url)
+    //     .then(res => console.log(`get_data: ${ res }`))
+    //     .then(data => JSON.stringify(data.json()))
+    //     .catch(err => console.log(`get_data: error en el fetch: ${ err }`))
+    // const res = await req.json()
+    // console.log(`get_data: solicitud a ${ url }`)
+    // console.log(`get_data: regresa ${ res }`)
+    // return req
 }
+
+// const get_data = () => {
+//     set_values()
+//     let url = `/data?x=${ x }&a=${ a }${ options == 'mixto' ? '&c=' + c : '' }&m=${ m }&options=${ options }`
+
+//     const xhr = new XMLHttpRequest()
+//     xhr.open("GET", url)
+//     xhr.send()
+//     xhr.onreadystatechange = e => {
+//         console.log(``)
+//     }
+    
+
+    // $.ajax({
+    //     url,
+    //     dataType: 'json',
+    //     beforeSend: xhr => {
+    //         console.log(`get_data: Se envía petición: ${ url }`)
+    //         vals_validator()
+    //     },
+    //     success: res => {
+    //         console.log(`get_data: La petición fue correcta`)
+    //         console.log(`get_data: ${ res }`)
+    //         return res
+    //     },
+    //     error: (req, status, err) => {
+    //         console.log(`get_data: Algo falló en la petición`)
+    //         console.log(`get_data: status (${ status })`)
+    //         console.log(`get_data: error (${ err })`)
+    //         return null
+    //     }
+    // })
+// }
 
 const export_xlsx = () => {
     let data, wb, out

@@ -17,7 +17,6 @@ let routes = app => {
 
     app.route('/data')
         .get(controllers.get_data)
-        .post(controllers.post_data)
 
     app.route('*')
         .get(controllers.error)

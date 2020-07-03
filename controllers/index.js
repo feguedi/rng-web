@@ -27,58 +27,19 @@ let form_chartjs = (req, res) => {
     })
 }
 
-let post_data = (req, res) => {
-    let body, metodo
-
-    try {
-        body = req.body
-        metodo = body.options
-    } catch (error) {
-        res.status(400).render('error', {
-            title: 'Error',
-            message: 'Método no encontrado\n¿Seguro que es un método congruencial?'
-        })
-    }
-
-    switch (metodo) {
-        case 'mixto':
-            res.json({
-                data: generator.arrayMixto(body.x, body.a, body.c, body.m),
-                // num_uniformes: generator.arrayMixto(body.x, body.a, body.c, body.m),
-                // sig_semilla: generator.siguienteSemillaMixto(body.x, body.a, body.c, body.m)
-            })
-            break
-        case 'multiplicativo':
-            res.json({
-                data: generator.arrayMultiplicativo(body.x, body.a, body.m),
-                // num_uniformes: generator.arrayMultiplicativo(body.x, body.a, body.m),
-                // sig_semilla: generator.siguienteSemillaMultiplicativo(body.x, body.a, body.m)
-            })
-            break
-        default:
-            break
-    }
-}
-
 let get_data = (req, res) => {
     let body, metodo
 
     if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).render('error', {
-            title: 'Error',
-            message: 'Ningún valor enviado\n"Bad request"'
-        })
+                title: 'Error',
+                message: 'Ningún valor enviado\n"Bad request"'
+            })
+        return
     }
 
-    try {
-        body = req.body
-        metodo = body.options
-    } catch (error) {
-        res.status(404).render('error', {
-            title: 'Error',
-            message: 'Método no válido\n¿Seguro que es un método congruencial?'
-        })
-    }
+    body = req.body
+    metodo = body.options
 
     console.log(`get_data: elementos de req:`)
     Object.keys(req.body).forEach(key => console.log(`\t${ key }:\t\t${ req.body[key] }`))
@@ -95,10 +56,6 @@ let get_data = (req, res) => {
             })
             break
         default:
-            res.render('error', {
-                title: 'Error',
-                message: 'Error 500\nInternal Server Error\n\n... muy probablemente por datos mal mandados'
-            })
             break
     }
 }
@@ -112,7 +69,6 @@ module.exports = {
     form_d3,
     form_chartjs,
     get_data,
-    post_data,
     error,
     error_50x
 }

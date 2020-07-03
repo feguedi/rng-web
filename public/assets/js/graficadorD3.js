@@ -1,8 +1,10 @@
 'use strict'
 export const graph = (x, a, c, m, options) => {
     // let myChart = d3.select('myChart');
+    console.log(`graficadorD3: entrando en el graficador`)
     let myChart;
-    fetch(`/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`)
+    let url = `/data?x=${ x }&a=${ a }&c=${ c }&m=${ m }&options=${ options }`;
+    fetch(url)
         .then(res => res.json())
         .then(myJson => {
             console.log(`graficadorD3: graph: respuesta de 'data': ${ myJson }`);
