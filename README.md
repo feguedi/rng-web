@@ -6,7 +6,7 @@ Generador de números pseudo-aleatorios donde el usuario pueda elegir el tipo de
 
 Siguiendo el libro _"Simulación. Un enfoque práctico"_ del autor **Raúl Coss Bú**, donde el autor sugiere dos tipos de métodos congruenciales para poder experimentar en una simulación: congruencial mixto y congruencial multiplicativo.
 
-&gt; Estos números se consideran pseudoaleatorios, porque aunque pasan todas las pruebas estadísticas de aleatoriedad, ellos son de hecho completamente determinísticos.
+> Estos números se consideran pseudoaleatorios, porque aunque pasan todas las pruebas estadísticas de aleatoriedad, ellos son de hecho completamente determinísticos.
 
 Parte del proyecto es utilizar una API para que pueda generarse un archivo, ya sea JSON o CSV, mediante una solicitud. En cambio, si se quiere obtener un archivo de Excel con los números, se debe ingresar directamente a la versión web.
 
